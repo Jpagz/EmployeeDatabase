@@ -1,6 +1,9 @@
 package commrhardman23.httpsgithub.employeedatabase;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +35,7 @@ public class EmployeeDatabaseInterface extends AppCompatActivity {
      * insertData adds elements to the Employee database using information given by the user
      * @param vw is the button the method is associated with
      */
-    private void insertData(View vw){
+    public void insertData(View vw){
 
         /**
          * 1. Create a new EmployeeDatabaseHelper variable. You will need to use the following call:
@@ -42,6 +45,45 @@ public class EmployeeDatabaseInterface extends AppCompatActivity {
          * 4. Get a Writable Database reference using the variable name db (Remember your
          *    try-catch block. The if-else statement that follows should also go in your try block).
          */
+        EmployeeDatabaseHelper employeeDatabaseHelper = new EmployeeDatabaseHelper(this, null, null, 0);
+        SQLiteDatabase db = null;
+        String name;
+        String position;
+        String employeeNum;
+        String wage;
+        ContentValues employeeValues = new ContentValues();
+
+
+        try {
+            db = employeeDatabaseHelper.getWritableDatabase();
+            //insert code from if-else statement here
+            if(edtxtName.getText().length() == 0 || edtxtPosition.getText().length() == 0 ||
+                    edtxtEmployeeNum.getText().length() == 0 || edtxtWage.getText().length() == 0){
+
+                txtvwResult.setText("You must enter all values to add an element!");
+
+            } else {
+
+                /**
+                 * 1. Set each variable equal to the values from the EditTexts
+                 * 2. put each value into the ContentValues variable
+                 * 3. Call the EmployeeDatabaseHelper's insertElement method
+                 * 4. Display that the element has been added successfully
+                 */
+
+                name = edtxtName.getText().toString();
+                position = edtxtPosition.getText().toString();
+                employeeNum = edtxtEmployeeNum.getText().toString();
+                wage = edtxtWage.getText().toString();
+                employeeValues.put("NAME,",name);
+                employeeValues.put("POSITION,",position);
+                employeeValues.put("EMPLOYEE_NUM",employeeNum);
+                employeeValues.put("WAGE,",wage);
+            }
+        } catch (SQLiteException e) {
+            //display that the database was not found
+            txtvwResult.setText("Database not Found!");
+        }
 
         if(edtxtName.getText().length() == 0 || edtxtPosition.getText().length() == 0 ||
                 edtxtEmployeeNum.getText().length() == 0 || edtxtWage.getText().length() == 0){
@@ -56,9 +98,22 @@ public class EmployeeDatabaseInterface extends AppCompatActivity {
              * 3. Call the EmployeeDatabaseHelper's insertElement method
              * 4. Display that the element has been added successfully
              */
-
+            name = edtxtName.getText().toString();
+            position = edtxtPosition.getText().toString();
+            employeeNum = edtxtEmployeeNum.getText().toString();
+            wage = edtxtWage.getText().toString();
+            employeeValues.put("NAME,", name);
+            employeeValues.put("POSITION,", position);
+            employeeValues.put("EMPLOYEE_NUM", employeeNum);
+            employeeValues.put("WAGE,", wage);
+            employeeDatabaseHelper.insertElement(db, employeeValues);
+            txtvwResult.setText("Element has been added sucessfully");
         }
-
+db.close();
+        }
+    ++catch(SQLiteException e) {
+        //display that the database was not found
+        txtvwResult.setText("Database not Found!");
     }
 
     /**
@@ -66,7 +121,7 @@ public class EmployeeDatabaseInterface extends AppCompatActivity {
      * in the Employee database
      * @param vw is the button that is associated with this method
      */
-    private void searchOrDelete(View vw){
+    public void searchOrDelete(View vw){
 
         Intent goToSearchDelete = new Intent(this, SearchDatabase.class);
 

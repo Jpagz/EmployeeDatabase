@@ -26,12 +26,11 @@ public class EmployeeDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         updateMyDatabase(db, oldVersion, newVersion);
     }
-
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL("CREATE TABLE EMPLOYEE (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "NAME TEXT, " +
                 "POSITION TEXT, " +
-                "EMPLOYEE_NUM INTEGER PRIMARY KEY, " +
+                "EMPLOYEE_NUM INTEGER, " +
                 "WAGE REAL);");
     }
 
