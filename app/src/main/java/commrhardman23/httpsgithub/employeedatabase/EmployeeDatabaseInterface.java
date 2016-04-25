@@ -111,7 +111,7 @@ public class EmployeeDatabaseInterface extends AppCompatActivity {
         }
 db.close();
         }
-    ++catch(SQLiteException e) {
+    catch(SQLiteException e) {
         //display that the database was not found
         txtvwResult.setText("Database not Found!");
     }
