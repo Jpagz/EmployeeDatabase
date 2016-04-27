@@ -98,23 +98,26 @@ public class EmployeeDatabaseInterface extends AppCompatActivity {
              * 3. Call the EmployeeDatabaseHelper's insertElement method
              * 4. Display that the element has been added successfully
              */
-            name = edtxtName.getText().toString();
-            position = edtxtPosition.getText().toString();
-            employeeNum = edtxtEmployeeNum.getText().toString();
-            wage = edtxtWage.getText().toString();
-            employeeValues.put("NAME,", name);
-            employeeValues.put("POSITION,", position);
-            employeeValues.put("EMPLOYEE_NUM", employeeNum);
-            employeeValues.put("WAGE,", wage);
-            employeeDatabaseHelper.insertElement(db, employeeValues);
-            txtvwResult.setText("Element has been added sucessfully");
+            try {
+                db = employeeDatabaseHelper.getWritableDatabase();
+                name = edtxtName.getText().toString();
+                position = edtxtPosition.getText().toString();
+                employeeNum = edtxtEmployeeNum.getText().toString();
+                wage = edtxtWage.getText().toString();
+                employeeValues.put("NAME,", name);
+                employeeValues.put("POSITION,", position);
+                employeeValues.put("EMPLOYEE_NUM", employeeNum);
+                employeeValues.put("WAGE,", wage);
+                employeeDatabaseHelper.insertElement(db, employeeValues);
+                txtvwResult.setText("Element has been added sucessfully");
+            }catch (SQLiteException e) {
+            //display that the database was not found
+            txtvwResult.setText("Database not Found!");
+        }
         }
 db.close();
         }
-    catch(SQLiteException e) {
-        //display that the database was not found
-        txtvwResult.setText("Database not Found!");
-    }
+
 
     /**
      * searchOrDelete opens the new activity where the user will be able to search or delete entries
